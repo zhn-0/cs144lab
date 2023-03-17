@@ -13,6 +13,9 @@ class TCPConnection {
     TCPReceiver _receiver{_cfg.recv_capacity};
     TCPSender _sender{_cfg.send_capacity, _cfg.rt_timeout, _cfg.fixed_isn};
 
+    size_t _time_since_last_segment_received{0};
+    bool _active{true}, _rst{false};
+
     //! outbound queue of segments that the TCPConnection wants sent
     std::queue<TCPSegment> _segments_out{};
 
@@ -24,6 +27,9 @@ class TCPConnection {
   public:
     //! \name "Input" interface for the writer
     //!@{
+
+    void send();
+    void set_error();
 
     //! \brief Initiate a connection by sending a SYN segment
     void connect();

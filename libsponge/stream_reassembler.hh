@@ -5,15 +5,22 @@
 
 #include <cstdint>
 #include <string>
+#include <vector>
+#include <map>
+#include <cassert>
 
 //! \brief A class that assembles a series of excerpts from a byte stream (possibly out of order,
 //! possibly overlapping) into an in-order byte stream.
 class StreamReassembler {
   private:
     // Your code here -- add private members as necessary.
-
     ByteStream _output;  //!< The reassembled in-order byte stream
     size_t _capacity;    //!< The maximum number of bytes
+    bool _eof = 0;
+    size_t first_unread = 0, first_unassembled = 0, first_unacceptable = 0, num_of_unassembled_bytes = 0;
+    std::map<size_t, std::pair<std::string, bool>> unassembled = {};
+    
+    void insert_to_unassembled(const std::string &data, const size_t index, bool eof);
 
   public:
     //! \brief Construct a `StreamReassembler` that will store up to `capacity` bytes.

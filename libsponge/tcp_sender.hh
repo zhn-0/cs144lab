@@ -6,8 +6,34 @@
 #include "tcp_segment.hh"
 #include "wrapping_integers.hh"
 
+#include <cassert>
 #include <functional>
 #include <queue>
+#include <map>
+
+class retx_timer {
+  private:
+    bool _start{false}, _expired{false};
+    unsigned int passed_time{0};
+
+  public:
+    retx_timer() { }
+
+    void start() {  _start = true; _expired = false; passed_time = 0;  }
+
+    void stop() {  _start = false;  }
+
+    void pass_time(unsigned int t, unsigned int RTO) {
+        if(!_start)return;
+        passed_time += t;
+        if (passed_time >= RTO)
+            _expired = true;
+    }
+
+    bool expired() {  return _expired;  }
+
+    bool running() {  return _start;  }
+};
 
 //! \brief The "sender" part of a TCP implementation.
 
@@ -22,15 +48,24 @@ class TCPSender {
 
     //! outbound queue of segments that the TCPSender wants sent
     std::queue<TCPSegment> _segments_out{};
+    std::queue<TCPSegment> _outstanding{};
 
     //! retransmission timer for the connection
     unsigned int _initial_retransmission_timeout;
+    unsigned int _consecutive_retransmissions{0}, _RTO;
 
     //! outgoing stream of bytes that have not yet been sent
     ByteStream _stream;
 
     //! the (absolute) sequence number for the next byte to be sent
     uint64_t _next_seqno{0};
+
+    bool _fin_sent{false};
+    uint64_t _mx_ackno{0}, _bytes_in_flight{0};
+
+    uint16_t _window_size{1};
+
+    retx_timer _timer{};
 
   public:
     //! Initialize a TCPSender
