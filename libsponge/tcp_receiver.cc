@@ -22,7 +22,7 @@ void TCPReceiver::segment_received(const TCPSegment &seg) {
     if(header.fin)_fin = true;
 }
 
-optional<WrappingInt32> TCPReceiver::ackno() const { 
+optional<WrappingInt32> TCPReceiver::ackno() const {
     if(!_syn)return std::nullopt;
     return wrap(_reassembler.stream_out().bytes_written() + 1 + (_reassembler.stream_out().input_ended() && _fin), _isn);
  }

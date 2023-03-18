@@ -31,9 +31,9 @@ void StreamReassembler::push_substring(const string &data, const size_t index, c
     first_unread = _output.bytes_read();
     first_unacceptable = first_unread + _capacity;
     if(index + data.size() <= first_unacceptable)
-        insert_to_unassembled(data, index, eof);
+        insert_to_unassembled(std::move(data), index, eof);
     else
-        insert_to_unassembled(data.substr(0, first_unacceptable - index), index, false);
+        insert_to_unassembled(std::move(data.substr(0, first_unacceptable - index)), index, false);
     while(!unassembled.empty())
     {
         auto &[idx, pair] = *unassembled.begin();
@@ -66,7 +66,7 @@ void StreamReassembler::push_substring(const string &data, const size_t index, c
         num_of_unassembled_bytes += it->second.first.size() - idx - str.size() + it->first;
         str += it->second.first.substr(idx + str.size() - it->first);
     }
-    unassembled = std::map<size_t, std::pair<std::string, bool>>(vec.begin(), vec.end());
+    unassembled = std::move(std::map<size_t, std::pair<std::string, bool>>(vec.begin(), vec.end()));
 }
 
 size_t StreamReassembler::unassembled_bytes() const { return num_of_unassembled_bytes; }
