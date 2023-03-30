@@ -18,7 +18,7 @@ class StreamReassembler {
     size_t _capacity;    //!< The maximum number of bytes
     bool _eof = 0;
     size_t first_unread = 0, first_unassembled = 0, first_unacceptable = 0, num_of_unassembled_bytes = 0;
-    std::map<size_t, std::pair<std::string, bool>> unassembled = {};
+    std::map<size_t, std::pair<std::string, bool>> unassembled{};
     
     void insert_to_unassembled(const std::string &data, const size_t index, bool eof);
 

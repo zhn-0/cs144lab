@@ -47,7 +47,6 @@ void TCPSender::fill_window() {
             _timer.start();
         _segments_out.push(seg);
         _outstanding.push(seg);
-        // std::cout << "DEBUG:" << seg.payload().copy() << " " << _next_seqno << std::endl;
     }
 }
 
@@ -61,7 +60,6 @@ void TCPSender::ack_received(const WrappingInt32 ackno, const uint16_t window_si
     while(!_outstanding.empty())
     {
         auto &seg = _outstanding.front();
-        // std::cout << "DEBUG: " << unwrap(seg.header().seqno, _isn, _stream.bytes_read()) << " " << _ackno << std::endl;
         uint64_t segno = unwrap(seg.header().seqno, _isn, _stream.bytes_read());
         size_t seg_len = seg.length_in_sequence_space();
         if(segno + seg_len - 1 < _ackno)

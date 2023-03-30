@@ -18,8 +18,8 @@ class ByteStream {
     // that's a sign that you probably want to keep exploring
     // different approaches.
     size_t _capacity;
-    size_t readen, written;
-    std::string stream;
+    size_t readen{}, written{};
+    std::string stream{};
     bool _error{}, _eof{};  //!< Flag indicating that the stream suffered an error.
 
   public:

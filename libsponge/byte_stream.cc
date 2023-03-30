@@ -12,16 +12,16 @@ void DUMMY_CODE(Targs &&... /* unused */) {}
 
 using namespace std;
 
-ByteStream::ByteStream(const size_t capacity) : _capacity(capacity), readen(0), written(0), stream("") {  }
+ByteStream::ByteStream(const size_t capacity) : _capacity(capacity) {  }
 
 size_t ByteStream::write(const string &data) {
     if(_eof)return 0;
-    size_t i = remaining_capacity();
-    if(i < data.size())
+    size_t num = remaining_capacity();
+    if(num < data.size())
     {
-        stream += data.substr(0, i);
-        written += i;
-        return i;
+        stream += data.substr(0, num);
+        written += num;
+        return num;
     }
     stream += data;
     written += data.size();
@@ -32,7 +32,7 @@ size_t ByteStream::write(const string &data) {
 string ByteStream::peek_output(const size_t len) const {  return stream.substr(0, len);  }
 
 //! \param[in] len bytes will be removed from the output side of the buffer
-void ByteStream::pop_output(const size_t len) { stream = stream.substr(len); readen += len; }
+void ByteStream::pop_output(const size_t len) { stream = std::move(stream.substr(len)); readen += len; }
 
 //! Read (i.e., copy and then pop) the next "len" bytes of the stream
 //! \param[in] len bytes will be popped and returned

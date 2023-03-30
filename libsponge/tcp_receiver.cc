@@ -17,7 +17,6 @@ void TCPReceiver::segment_received(const TCPSegment &seg) {
     uint64_t offset = unwrap(header.seqno, _isn, _reassembler.stream_out().bytes_written());
     if(offset == 0 && !header.syn)return;
     offset -= !header.syn;
-    // std::cout << "DEBUG: " << seg.payload().str() << " " << offset << std::endl;
     _reassembler.push_substring(seg.payload().copy(), offset, header.fin);
     if(header.fin)_fin = true;
 }
