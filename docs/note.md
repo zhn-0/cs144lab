@@ -274,11 +274,23 @@ Lab7没有实质工作就没做了。
 最后放一下实验结果。
 
 <div align=center>
-    <img src="score.png"/>
+    <img src="score.png"/><br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 2px;">
+      测试样例全部通过
+  	</div>
 </div>
 
 <div align=center>
-    <img src="performance.png"/>
+    <img src="performance.png"/><br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 2px;">
+      性能测试也合格
+  	</div>
 </div>
 
 感觉我这个笔记写的挺烂的hhh。
