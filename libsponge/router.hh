@@ -72,7 +72,7 @@ class Router {
             if (route_prefix != a.route_prefix)
                 return route_prefix < a.route_prefix;
             return interface_num < a.interface_num;
-            }
+        }
     };
 
     std::set<route_entry> route_table{};

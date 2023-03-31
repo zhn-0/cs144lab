@@ -44,12 +44,9 @@ void Router::route_one_datagram(InternetDatagram &dgram) {
         uint32_t a = entry.route_prefix;
         uint8_t n = entry.prefix_length;
         uint32_t b = dgram.header().dst;
-        // std::cout << "DEBUG: ^" << a << " " << b << "!"<< static_cast<int>(n) << std::endl;
         if(n!=0)a >>= (32 - n), b >>= (32 - n);
-        // std::cout << "DEBUG: ~" << a << " " << b << std::endl;
         if(n==0 || a == b)
         {
-            // std::cout<<"DEBUG: "<<a<<std::endl;
             Address next_hop = entry.next_hop.has_value() ? entry.next_hop.value() : Address::from_ipv4_numeric(dgram.header().dst);
             interface(entry.interface_num).send_datagram(dgram, next_hop);
             break;
