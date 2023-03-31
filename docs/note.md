@@ -113,9 +113,11 @@ WrappingInt32 wrap(uint64_t n, WrappingInt32 isn) {
 ```
 难点在于`32-bit`向`64-bit`的unwrap。这需要一个checkpoint来指示转换的具体位置，否则同一个`32-bit`数可以转换出2^32个`64-bit`数。有了checkpoint，我们就可以确定离它最近的那个数是我们想要的。  
 共分为两种情况:  
-![pic1](pic1.png)
+<div align=center>![pic1](pic1.png)</div>
+
 情况1：`(offset = n - wrap(checkpoint, isn)) > 0`，此时只需要根据距离决定是`ret`还是`ret - (1ul << 32)`。  
-![pic2](pic2.png) 
+<div align=center>![pic2](pic2.png)</div>
+
 情况2：`(offset = n - wrap(checkpoint, isn)) < 0`，此时只需要根据距离决定是`ret`还是`ret + (1ul << 32)`。 
 unwrap代码：
 ```cpp
@@ -267,8 +269,8 @@ Lab7没有实质工作就没做了。
 
 最后放一下实验结果。
 
-![测试样例全部通过](score.png)
+<div align=center>![测试样例全部通过](score.png)</div>
 
-![性能测试也合格](performance.png)
+<div align=center>![性能测试也合格](performance.png)</div>
 
 感觉我这个笔记写的挺烂的hhh。
